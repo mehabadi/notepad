@@ -1,0 +1,15 @@
+<div [formGroup]="form" class="form-group">
+  <input
+    class="form-control mb-2"
+    formControlName="title"
+    placeholder="Enter note title..."
+    (change)="titleChange($event)"
+  />
+  <textarea
+    class="form-control"
+    formControlName="note"
+    (change)="noteChange($event)"
+    placeholder="Enter note..."></textarea>
+</div>
+
+

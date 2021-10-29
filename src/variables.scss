@@ -1,7 +1,10 @@
 
-
-$boxed-max-width:           1024px;
-$boxed-min-width:           320px;
+$container-max-widths: (
+  sm: 320px,
+  md: 720px,
+  lg: 960px,
+  xl: 1024px
+) !default;
 
 // Body
 
@@ -9,9 +12,25 @@ $body-bg:                   #eee;
 $body-color:                #333;
 $font-family:               Arial, Roboto, sans-serif;
 
+$font-family-base:          $font-family;
+
 // Header
 $header-font-size:          24px;
 $sub-header-font-size:      18px;
 
 // Elements
 $border-color:              #ccc;
+
+// Forms
+$label-font-size:           12px;
+$input-font-size:           14px;
+$input-placeholder-color:   #AAA;
+$input-plaintext-color:     $body-color;
+$button-font-size:          14px;
+
+// colors
+$primary:                   #39ACDC;
+$success:                   #57B93E;
+$info:                      $primary;
+$danger:                    #EC3646;
+

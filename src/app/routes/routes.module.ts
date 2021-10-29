@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { RoutesRoutingModule } from './routes-routing.module';
 import { EntryComponent } from './components/entry/entry.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {ShareModule} from "../share/share.module";
 
 
 @NgModule({
@@ -11,7 +13,10 @@ import { EntryComponent } from './components/entry/entry.component';
   ],
   imports: [
     CommonModule,
-    RoutesRoutingModule
+    FormsModule,
+    ReactiveFormsModule,
+    RoutesRoutingModule,
+    ShareModule
   ]
 })
 export class RoutesModule { }
