@@ -1,0 +1,7 @@
+<ng-template #template>
+  <div class="modal-body text-center">
+    <ng-content></ng-content>
+    <button type="button" class="btn btn-default" (click)="confirmed()" >Yes</button>
+    <button type="button" class="btn btn-primary" (click)="decline()" >No</button>
+  </div>
+</ng-template>

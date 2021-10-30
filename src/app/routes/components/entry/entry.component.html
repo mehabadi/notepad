@@ -33,10 +33,28 @@
   </div>
   <hr/>
   <div class="row">
-    <div class="col-md-4 offset-md-8">
-      <button type="button" class="btn btn-outline-secondary mr-1">View State</button>
-      <button (click)="submit()" type="submit" class="btn btn-primary mr-1">Save</button>
-      <button type="button" class="btn btn-danger">Delete</button>
+    <div class="col-md-12">
+      <button
+        (click)="back()"
+        type="button"
+        class="btn btn-light pull-left">Back to list</button>
+      <button
+        *ngIf="!!editingItem"
+        (click)="confirmDelete(editingItem)"
+        type="button"
+        class="btn btn-danger float-right">Delete</button>
+      <button
+        (click)="submit()"
+        type="submit"
+        class="btn btn-primary float-right mr-1">Save</button>
+      <button
+        (click)="view(true)"
+        type="button"
+        class="btn btn-outline-secondary float-right mr-1">View State</button>
     </div>
   </div>
 </form>
+
+<app-confirm-modal (confirm)="onConfirmed()">
+  <p>Are you sure to delete?</p>
+</app-confirm-modal>
