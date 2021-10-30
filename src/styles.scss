@@ -16,3 +16,27 @@ body {
     font-size: $input-font-size;
   }
 }
+
+/***
+* form validation
+ */
+.invalid-feedback {
+  margin-top: -0.4rem;
+  margin-bottom: 0.5rem;
+}
+.submitted input.ng-invalid, input.ng-dirty.ng-invalid, .notes .ng-dirty input.ng-invalid,
+.submitted textarea.ng-invalid, textarea.ng-dirty.ng-invalid, .notes .ng-dirty textarea.ng-invalid {
+  border-color: #f05050;
+}
+.submitted input:focus.ng-invalid, input:focus.ng-dirty.ng-invalid,
+.submitted textarea:focus.ng-invalid, textarea:focus.ng-dirty.ng-invalid {
+  box-shadow: 0 0 0 0.2rem rgb(240 80 80 / 25%);
+}
+
+.submitted .invalid-feedback{
+  display: block;
+}
+
+.ng-dirty.ng-invalid + ng-component .invalid-feedback{
+  display: block;
+}

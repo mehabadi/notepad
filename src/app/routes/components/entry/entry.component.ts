@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Note} from "../../../share/models/note";
 
@@ -11,11 +11,12 @@ export class EntryComponent implements OnInit {
 
   form: FormGroup = new FormGroup({
     title: new FormControl(null, Validators.compose([Validators.required, Validators.maxLength(255)])),
-    notes: this.fb.array([])
+    notes: this.fb.array([], Validators.compose([Validators.required]))
   });
 
   constructor(
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -28,9 +29,14 @@ export class EntryComponent implements OnInit {
 
   addNote() {
     this.notes.push(this.fb.control(new Note('', '')));
+    this.cdr.detectChanges();
   }
 
   remove(index: number){
     this.notes.removeAt(index);
+  }
+
+  submit(){
+    console.log(this.form.valid)
   }
 }

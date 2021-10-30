@@ -1,7 +1,18 @@
-import {Attribute, Component, forwardRef, Injector, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {FormControl, FormGroup, NG_VALUE_ACCESSOR, NgControl, Validators} from "@angular/forms";
+import {Component, forwardRef, Injector, Input, OnDestroy, OnInit} from '@angular/core';
+import {
+  AbstractControl,
+  FormControl,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  NgControl,
+  ValidationErrors,
+  Validator,
+  Validators
+} from "@angular/forms";
 import {AbstractControlValueAccessor} from "../../directives/abstract-control-value-accessor";
 import {Note} from "../../models/note";
+import {Subject} from "rxjs";
+import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'app-note-input',
@@ -12,44 +23,64 @@ import {Note} from "../../models/note";
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => NoteInputComponent),
       multi: true
-    }
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: NoteInputComponent,
+      multi: true,
+    },
   ]
 })
-export class NoteInputComponent extends AbstractControlValueAccessor implements OnInit, OnChanges {
+export class NoteInputComponent extends AbstractControlValueAccessor implements OnInit, Validator, OnDestroy {
   @Input() inputClass: string = '';
 
-  form: FormGroup = new FormGroup({
-    title: new FormControl(null, Validators.compose([Validators.required, Validators.maxLength(255)])),
-    note: new FormControl(null, Validators.compose([Validators.required, Validators.maxLength(1000)]))
-  });
+  private destroy$ = new Subject();
+  private _title: string = '';
+  private _note:  string = '';
+  title = new FormControl('', Validators.compose([Validators.required, Validators.maxLength(255)]));
+  note  = new FormControl('', Validators.compose([Validators.required, Validators.maxLength(1000)]));
+
   formControl: NgControl | undefined;
 
   constructor(
-    private _injector: Injector,
-    @Attribute('placeholder')
-    public placeholder: string = ''
+    private _injector: Injector
   ) {
     super();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes?.disabled) {
-      this.changeDisableState(!!changes.disabled);
-    }
+  ngOnDestroy(): void {
+    this.destroy$.next();
   }
 
   ngOnInit(): void {
     this.formControl = this._injector.get(NgControl);
 
-    this.changeDisableState(this.disabled);
+    this.title.valueChanges.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(val => {
+      if (this._title !== val) {
+        this._title = val;
+        this.value = new Note(val, this._note);
+      }
+    });
+
+    this.note.valueChanges.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(val => {
+      if (this._note !== val) {
+        this._note = val;
+        this.value = new Note(this._title, val);
+      }
+    });
   }
 
-  changeDisableState(disabled: boolean) {
-    if (disabled) {
-      this.form.disable();
-    } else {
-      this.form.enable();
+  validate(control: AbstractControl): ValidationErrors | null {
+    const isTitleValid = this.title.valid;
+    const isNoteValid  = this.note.valid;
+    if (isTitleValid && isNoteValid){
+      return null;
     }
+    return {notes: {title: !isTitleValid, note: !isNoteValid}};
   }
 
   get value() {
@@ -60,7 +91,8 @@ export class NoteInputComponent extends AbstractControlValueAccessor implements 
     if (val !== undefined && this._value !== undefined &&
       ((this._value?.title != val?.title) || (this._value?.note != val?.note))) {
       this._value = val;
-      this.form.patchValue({...val});
+      this.title.patchValue(val.title);
+      this.note.patchValue(val.note);
       this.onChange(val);
       this.onTouch(val);
     }
@@ -73,23 +105,5 @@ export class NoteInputComponent extends AbstractControlValueAccessor implements 
     }
 
     this.value = val.isValid() ? val : new Note('', '');
-  }
-
-  titleChange(event: any) {
-    const title = event.target.value;
-    if (!!this.value) {
-      this.value = {...this._value, title} as Note;
-      return;
-    }
-    this.value = new Note(title, '');
-  }
-
-  noteChange(event: any) {
-    const note = event.target.value;
-    if (!!this.value) {
-      this.value = {...this._value, note} as Note;
-      return;
-    }
-    this.value = new Note('', note);
   }
 }

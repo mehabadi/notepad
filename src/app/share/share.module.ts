@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NoteInputComponent } from './components/note-input/note-input.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormErrorModule} from "../form-error/form-error.module";
 
 
 const ELEMENTS = [
@@ -13,6 +14,8 @@ const ELEMENTS = [
     ...ELEMENTS
   ],
   imports: [
+    FormErrorModule,
+    FormsModule,
     ReactiveFormsModule,
     CommonModule
   ],

@@ -1,14 +1,15 @@
-<div [formGroup]="form" class="form-group">
+<div class="form-group">
   <input
     class="form-control mb-2"
-    formControlName="title"
+    [formControl]="title"
+    [hideErrorMessage]="true"
     placeholder="Enter note title..."
-    (change)="titleChange($event)"
   />
   <textarea
-    class="form-control"
-    formControlName="note"
-    (change)="noteChange($event)"
+    class="form-control mb-2"
+    [formControl]="note"
+    rows="5"
+    [hideErrorMessage]="true"
     placeholder="Enter note..."></textarea>
 </div>
 
