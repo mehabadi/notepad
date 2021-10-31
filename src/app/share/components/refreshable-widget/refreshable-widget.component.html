@@ -1,0 +1,14 @@
+<div ngClass="content">
+  <ng-content></ng-content>
+  <div class="loading" *ngIf="widget?.loading">
+    <div class="spinner-container">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="text-center">
+  <button (click)="onRefresh()" type="button" class="btn btn-outline-secondary">Load More</button>
+</div>

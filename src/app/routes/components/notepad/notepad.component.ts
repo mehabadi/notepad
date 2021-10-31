@@ -37,8 +37,7 @@ export class NotepadComponent {
     }
   }
 
-  view(goUp= false){
-    const path = goUp ? '../view-state' : 'view-state';
-    this.router.navigate([path], {relativeTo: this.route});
+  view(path = ''){
+    this.router.navigate([`${path}view-state`], {relativeTo: this.route});
   }
 }

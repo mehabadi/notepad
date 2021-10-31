@@ -61,6 +61,10 @@ export class EntryComponent extends NotepadComponent implements OnInit, AfterVie
     return !!this.editingItem;
   }
 
+  get returnPath(){
+    return this.isEditMode ? '../../' : '../';
+  }
+
   get notes() {
     return this.form.get('notes') as FormArray;
   }
@@ -86,8 +90,11 @@ export class EntryComponent extends NotepadComponent implements OnInit, AfterVie
   }
 
   back(){
-    const path = this.isEditMode ? '../../' : '../';
-    this.router.navigate([path], {relativeTo: this.route});
+    this.router.navigate([this.returnPath], {relativeTo: this.route});
+  }
+
+  viewStats(){
+    super.view(this.returnPath);
   }
 
   loadNotepad(id: string){

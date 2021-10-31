@@ -12,7 +12,10 @@ import {XhrInterceptor} from "./interceptors/xhr.interceptor";
 import {ExceptionInterceptor} from "./interceptors/exception.interceptor";
 import {NotepadComponent} from "./components/notepad/notepad.component";
 import {ListComponent} from "./components/list/list.component";
-import {ViewStateComponent} from "./components/view/view-state.component";
+import {ViewStatsComponent} from "./components/view/view-stats.component";
+import {GistService} from "./services/gist.service";
+import {CreatedGistsComponent} from "./components/view/created-gists/created-gists.component";
+import {FilesPerGistComponent} from "./components/view/files-per-gist/files-per-gist.component";
 
 
 @NgModule({
@@ -20,7 +23,9 @@ import {ViewStateComponent} from "./components/view/view-state.component";
     EntryComponent,
     ListComponent,
     NotepadComponent,
-    ViewStateComponent
+    ViewStatsComponent,
+    CreatedGistsComponent,
+    FilesPerGistComponent
   ],
   imports: [
     HttpClientModule,
@@ -33,6 +38,7 @@ import {ViewStateComponent} from "./components/view/view-state.component";
   ],
   providers: [
     NoteService,
+    GistService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: XhrInterceptor,

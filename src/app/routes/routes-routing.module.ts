@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {EntryComponent} from "./components/entry/entry.component";
 import {ListComponent} from "./components/list/list.component";
-import {ViewStateComponent} from "./components/view/view-state.component";
+import {ViewStatsComponent} from "./components/view/view-stats.component";
 
 const routes: Routes = [
     {
@@ -19,7 +19,7 @@ const routes: Routes = [
     },
     {
       path: 'view-state',
-      component: ViewStateComponent
+      component: ViewStatsComponent
     }
 ];
 

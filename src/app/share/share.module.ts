@@ -5,11 +5,16 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {FormErrorModule} from "../form-error/form-error.module";
 import {ConfirmComponent} from "./components/confirm/confirm.component";
 import {ModalModule} from "ngx-bootstrap/modal";
+import {LineChartComponent} from "./components/line-chart/line-chart.component";
+import {NgApexchartsModule} from "ng-apexcharts";
+import {RefreshableWidgetComponent} from "./components/refreshable-widget/refreshable-widget.component";
 
 
 const ELEMENTS = [
   NoteInputComponent,
-  ConfirmComponent
+  ConfirmComponent,
+  LineChartComponent,
+  RefreshableWidgetComponent
 ];
 
 @NgModule({
@@ -21,7 +26,8 @@ const ELEMENTS = [
     FormErrorModule,
     FormsModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    NgApexchartsModule
   ],
   exports: [
     ...ELEMENTS
