@@ -114,7 +114,7 @@ export class EntryComponent extends NotepadComponent implements OnInit, OnDestro
         this.form.patchValue({...res});
       } else {
         this.alertService.show('Notepad not found. You\'re redirecting to the list...', AlertTypes.DANGER);
-        setTimeout(this.back.bind(this), 1000);
+        this.back();
       }
     });
   }
