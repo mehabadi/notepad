@@ -30,6 +30,12 @@ export class ListComponent extends NotepadComponent implements OnInit, OnDestroy
 
   ngOnInit(): void {
     this.loadData();
+
+    this.noteService.changedData$.pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(() => {
+      this.loadData();
+    });
   }
 
   loadData(){
@@ -49,7 +55,7 @@ export class ListComponent extends NotepadComponent implements OnInit, OnDestroy
   }
 
   onConfirmed(){
-    super.delete(this.loadData.bind(this));
+    super.delete();
   }
 
 }

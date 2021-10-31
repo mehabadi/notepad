@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
-import {Observable, of} from "rxjs";
+import {Observable, of, Subject} from "rxjs";
 import {Notepad} from "../../share/models/note";
 import {Gist} from "../models/gist";
 import {MapperService} from "./mapper.service";
@@ -10,6 +10,7 @@ import {map, tap} from "rxjs/operators";
   providedIn: 'root'
 })
 export class NoteService {
+  changedData$ = new Subject();
   private _data: Notepad[] = [];
 
   constructor(private http: HttpClient) {
@@ -28,6 +29,7 @@ export class NoteService {
   public getNotepads(): Observable<Notepad[]>{
 
     if(this.data.length > 0){
+      this.updateOutdatedItems();
       return of(this.data);
     }
 
@@ -80,8 +82,9 @@ export class NoteService {
 
   delete(id: string): Observable<any> {
     return this.http.delete(`https://api.github.com/gists/${id}`).pipe(
-      tap(res => {
-        this.data = this.data.filter(item => item.id != id);
+      tap(() => {
+        this.removeNotepadById(id);
+        this.changedData$.next();
       })
     );
   }
@@ -90,10 +93,32 @@ export class NoteService {
     return this.data.find(c => c.id == id);
   }
 
+  private removeNotepadById(id: string){
+    this.data = this.data.filter(item => item.id != id);
+  }
+
+  private addNotepad(notepad: Notepad){
+    this.data = [...this.data, notepad];
+  }
+
   private updateDataItem(gist: Gist): Notepad{
     const notepad = MapperService.toNotepad(gist);
-    const data = this.data.filter(item => item.id != gist.id);
-    this.data = [...data, notepad];
+    gist.id && this.removeNotepadById(gist.id);
+    this.addNotepad(notepad);
     return notepad;
   }
+
+  private updateOutdatedItems(): void{
+    this.http.get<any>('https://api.github.com/users/mehabadi/gists').subscribe((res: Gist[]) => {
+      res.forEach(g => {
+        const outdated = this.data.find(n => (n.id == g.id) && (n.updated_at != g.updated_at));
+        if (outdated) {
+          outdated.id && this.removeNotepadById(outdated.id);
+          this.addNotepad(MapperService.toNotepad(g));
+          this.changedData$.next();
+        }
+      });
+    });
+  }
+
 }

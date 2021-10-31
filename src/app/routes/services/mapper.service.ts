@@ -26,6 +26,7 @@ export class MapperService {
     return {
       id: gist.id,
       title: gist.description,
+      updated_at: gist.updated_at,
       notes: Object.values(gist.files)?.map((item: any) => new Note(item.filename, item.content))
     } as Notepad;
   }

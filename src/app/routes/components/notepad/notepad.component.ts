@@ -28,7 +28,7 @@ export class NotepadComponent {
     this.modal?.openModal();
   }
 
-  delete(callback: any){
+  delete(callback = () => {}){
     const id = this.deletingItem?.id;
     if (!!id) {
       this.noteService.delete(id).subscribe( () => {

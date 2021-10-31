@@ -9,7 +9,7 @@ export class XhrInterceptor implements HttpInterceptor{
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const xhr = req.clone({
       setHeaders: {
-        'Authorization': 'token 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',
+        'Authorization': 'token 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',
       }
     });
     return next.handle(xhr);
