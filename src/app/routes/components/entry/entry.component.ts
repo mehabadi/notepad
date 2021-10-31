@@ -14,7 +14,7 @@ import {AlertTypes} from "../../../core/models/alert";
   templateUrl: './entry.component.html',
   styleUrls: ['./entry.component.scss']
 })
-export class EntryComponent extends NotepadComponent implements OnInit, AfterViewInit, OnDestroy {
+export class EntryComponent extends NotepadComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject();
   editingItem: Notepad | undefined | null;
 
@@ -40,6 +40,8 @@ export class EntryComponent extends NotepadComponent implements OnInit, AfterVie
   }
 
   ngOnInit(): void {
+    this.addNote();
+
     this.editingItem = null;
     this.route.params.pipe(
       takeUntil(this.destroy$)
@@ -49,12 +51,6 @@ export class EntryComponent extends NotepadComponent implements OnInit, AfterVie
         this.loadNotepad(id);
       }
     });
-  }
-
-  ngAfterViewInit(): void {
-    if (!this.isEditMode){
-      this.addNote();
-    }
   }
 
   get isEditMode() {
@@ -74,15 +70,23 @@ export class EntryComponent extends NotepadComponent implements OnInit, AfterVie
     this.cdr.detectChanges();
   }
 
+  removeNotes(){
+    while (this.notes.length !== 0) {
+      this.notes.removeAt(0);
+    }
+  }
+
   remove(index: number){
     this.notes.removeAt(index);
   }
 
   submit(){
     if (this.form.valid){
+      this.loading = true;
       this.noteService.save(this.form.value).pipe(
         takeUntil(this.destroy$)
       ).subscribe(res => {
+        this.loading = false;
         this.alertService.show('Changes successfully saved.', AlertTypes.SUCCESS);
         setTimeout(this.back.bind(this), 1000);
       });
@@ -98,11 +102,14 @@ export class EntryComponent extends NotepadComponent implements OnInit, AfterVie
   }
 
   loadNotepad(id: string){
+    this.loading = true;
     this.noteService.getOne(id).pipe(
       takeUntil(this.destroy$)
     ).subscribe((res) => {
+      this.loading = false;
       if (res) {
         this.editingItem = res;
+        this.removeNotes();
         res.notes?.forEach(note => this.addNote());
         this.form.patchValue({...res});
       } else {

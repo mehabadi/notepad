@@ -8,13 +8,15 @@ import {ModalModule} from "ngx-bootstrap/modal";
 import {LineChartComponent} from "./components/line-chart/line-chart.component";
 import {NgApexchartsModule} from "ng-apexcharts";
 import {RefreshableWidgetComponent} from "./components/refreshable-widget/refreshable-widget.component";
+import {LoadingComponent} from "./components/loading/loading.component";
 
 
 const ELEMENTS = [
   NoteInputComponent,
   ConfirmComponent,
   LineChartComponent,
-  RefreshableWidgetComponent
+  RefreshableWidgetComponent,
+  LoadingComponent
 ];
 
 @NgModule({

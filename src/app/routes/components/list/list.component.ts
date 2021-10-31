@@ -33,10 +33,12 @@ export class ListComponent extends NotepadComponent implements OnInit, OnDestroy
   }
 
   loadData(){
+    this.loading = true;
     this.noteService.getNotepads().pipe(
       takeUntil(this.destroy$)
     ).subscribe((res: Notepad[]) => {
       this.items = res;
+      this.loading = false;
     });
   }
 

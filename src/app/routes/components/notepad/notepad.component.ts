@@ -11,6 +11,7 @@ import {ActivatedRoute, Router} from "@angular/router";
   template: ''
 })
 export class NotepadComponent {
+  loading: boolean = false;
 
   @ViewChild(ConfirmComponent) modal: ConfirmComponent | undefined;
   private deletingItem: Notepad | undefined;

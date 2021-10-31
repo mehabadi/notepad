@@ -5,7 +5,7 @@
   <tr>
     <th scope="col">#</th>
     <th scope="col">Title</th>
-    <th scope="col">Actions</th>
+    <th scope="col" width="20%">Actions</th>
   </tr>
   </thead>
   <tbody>
@@ -29,6 +29,7 @@
   </tr>
   </tbody>
 </table>
+<app-loading *ngIf="loading" type="spinner"></app-loading>
 
 <app-confirm-modal (confirm)="onConfirmed()">
   <p>Are you sure to delete?</p>

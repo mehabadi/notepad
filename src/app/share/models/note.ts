@@ -4,8 +4,6 @@ export interface Notepad {
   notes: Note[];
 }
 export class Note {
-  public id: string | null = null;
-
   constructor(
     public title: string,
     public note: string

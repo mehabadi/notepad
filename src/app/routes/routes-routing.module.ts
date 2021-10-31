@@ -18,6 +18,11 @@ const routes: Routes = [
       component: EntryComponent
     },
     {
+      path: 'edit',
+      redirectTo: ''
+    },
+
+    {
       path: 'view-state',
       component: ViewStatsComponent
     }
